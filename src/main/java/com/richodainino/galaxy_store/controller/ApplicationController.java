@@ -8,7 +8,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-import java.util.UUID;
 
 @RestController
 public class ApplicationController {
@@ -23,7 +22,7 @@ public class ApplicationController {
     }
 
     @GetMapping("/application/{applicationID}")
-    public ResponseEntity<Application> getApplicationByID(@PathVariable UUID applicationID) {
+    public ResponseEntity<Application> getApplicationByID(@PathVariable String applicationID) {
         Application existingApplication = applicationService.getApplicationByID(applicationID);
         return new ResponseEntity<>(existingApplication, HttpStatus.OK);
     }
@@ -35,13 +34,13 @@ public class ApplicationController {
     }
 
     @PutMapping("/application/{applicationID}")
-    public ResponseEntity<Application> updateApplication(@PathVariable UUID applicationID, @RequestBody Application application) {
+    public ResponseEntity<Application> updateApplication(@PathVariable String applicationID, @RequestBody Application application) {
         Application updatedApplication = applicationService.updateApplication(applicationID, application);
         return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
     }
 
     @DeleteMapping("/application/{applicationID}")
-    public ResponseEntity<Application> deleteApplication(@PathVariable UUID applicationID) {
+    public ResponseEntity<Application> deleteApplication(@PathVariable String applicationID) {
         applicationService.deleteApplication(applicationID);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

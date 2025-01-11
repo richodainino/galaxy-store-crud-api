@@ -10,7 +10,6 @@ import org.springframework.data.annotation.LastModifiedDate;
 import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.Instant;
-import java.util.UUID;
 
 @Entity
 @Table(name = "application")
@@ -21,7 +20,7 @@ public class Application {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
     @JdbcTypeCode(SqlTypes.VARCHAR)
-    private UUID id;
+    private String id;
 
     @Column(name = "title", nullable = false)
     private String title;
@@ -44,5 +43,9 @@ public class Application {
     @Column(name = "updated_at", nullable = false)
     @JsonProperty("updated_at")
     private Instant updatedAt;
+
+    @Column(name = "deleted_at")
+    @JsonProperty("deleted_at")
+    private Instant deletedAt;
 
 }
