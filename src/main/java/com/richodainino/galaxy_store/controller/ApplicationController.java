@@ -1,5 +1,6 @@
 package com.richodainino.galaxy_store.controller;
 
+import com.richodainino.galaxy_store.handler.ResponseHandler;
 import com.richodainino.galaxy_store.model.Application;
 import com.richodainino.galaxy_store.service.ApplicationService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,33 +17,38 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @GetMapping("/applications")
-    public ResponseEntity<List<Application>> getAllApplications() {
+    public ResponseEntity<Object> getAllApplications() {
         List<Application> allApplications = applicationService.getAllApplications();
-        return new ResponseEntity<>(allApplications, HttpStatus.OK);
+        String message = "Successfully retrieved all applications";
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, allApplications);
     }
 
     @GetMapping("/application/{applicationID}")
-    public ResponseEntity<Application> getApplicationByID(@PathVariable String applicationID) {
+    public ResponseEntity<Object> getApplicationByID(@PathVariable String applicationID) {
         Application existingApplication = applicationService.getApplicationByID(applicationID);
-        return new ResponseEntity<>(existingApplication, HttpStatus.OK);
+        String message = "Successfully retrieved the application";
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, existingApplication);
     }
 
     @PostMapping("/application")
-    public ResponseEntity<Application> addApplication(@RequestBody Application application) {
+    public ResponseEntity<Object> addApplication(@RequestBody Application application) {
         Application newApplication = applicationService.addApplication(application);
-        return new ResponseEntity<>(newApplication, HttpStatus.CREATED);
+        String message = "Successfully created new application";
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, message, newApplication);
     }
 
     @PutMapping("/application/{applicationID}")
-    public ResponseEntity<Application> updateApplication(@PathVariable String applicationID, @RequestBody Application application) {
+    public ResponseEntity<Object> updateApplication(@PathVariable String applicationID, @RequestBody Application application) {
         Application updatedApplication = applicationService.updateApplication(applicationID, application);
-        return new ResponseEntity<>(updatedApplication, HttpStatus.OK);
+        String message = "Successfully updated the application";
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, updatedApplication);
     }
 
     @DeleteMapping("/application/{applicationID}")
-    public ResponseEntity<Application> deleteApplication(@PathVariable String applicationID) {
+    public ResponseEntity<Object> deleteApplication(@PathVariable String applicationID) {
         applicationService.deleteApplication(applicationID);
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        String message = "Successfully deleted the application";
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, null);
     }
 
 }
