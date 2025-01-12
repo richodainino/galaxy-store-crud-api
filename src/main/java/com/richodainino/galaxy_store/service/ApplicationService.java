@@ -1,7 +1,9 @@
 package com.richodainino.galaxy_store.service;
 
+import com.richodainino.galaxy_store.exception.ResourceNotFoundException;
 import com.richodainino.galaxy_store.model.Application;
 import com.richodainino.galaxy_store.repository.ApplicationRepository;
+import com.richodainino.galaxy_store.utils.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -21,9 +23,8 @@ public class ApplicationService {
     public Application getApplicationByID(String applicationID) {
         Application application = applicationRepository.findNotDeletedByID(applicationID);
         if (application == null) {
-            throw new RuntimeException("Application Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
-
         return application;
     }
 
@@ -34,9 +35,8 @@ public class ApplicationService {
     public Application updateApplication(String applicationID, Application application) {
         Application existingApplication = applicationRepository.findNotDeletedByID(applicationID);
         if (existingApplication == null) {
-            throw new RuntimeException("Application Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
-
         existingApplication.setTitle(application.getTitle());
         existingApplication.setPublisher(application.getPublisher());
         existingApplication.setDescription(application.getDescription());
@@ -48,9 +48,8 @@ public class ApplicationService {
     public void deleteApplication(String applicationID) {
         Application existingApplication = applicationRepository.findNotDeletedByID(applicationID);
         if (existingApplication == null) {
-            throw new RuntimeException("Application Not Found");
+            throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
-
         existingApplication.setDeletedAt(Instant.now());
         applicationRepository.save(existingApplication);
     }

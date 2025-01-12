@@ -2,6 +2,7 @@ package com.richodainino.galaxy_store.model;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import jakarta.validation.constraints.NotNull;
 import lombok.Data;
 import org.hibernate.annotations.JdbcTypeCode;
 import org.hibernate.type.SqlTypes;
@@ -22,13 +23,16 @@ public class Application {
     @JdbcTypeCode(SqlTypes.VARCHAR)
     private String id;
 
-    @Column(name = "title", nullable = false)
+    @NotNull(message = "Title is required")
+    @Column(name = "title")
     private String title;
 
-    @Column(name = "publisher", nullable = false)
+    @NotNull(message = "Publisher is required")
+    @Column(name = "publisher")
     private String publisher;
 
-    @Column(name = "description", nullable = false)
+    @NotNull(message = "Description is required")
+    @Column(name = "description")
     private String description;
 
     @Column(name = "price") // Price can be null for free apps (0 rupiah)
