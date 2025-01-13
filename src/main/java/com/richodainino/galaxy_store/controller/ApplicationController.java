@@ -19,8 +19,13 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @GetMapping("/applications")
-    public ResponseEntity<Object> getAllApplications() {
-        List<Application> allApplications = applicationService.getAllApplications();
+    public ResponseEntity<Object> getAllApplications(@RequestParam(name = "category", required = false) String category) {
+        List<Application> allApplications = new ArrayList<>();
+        if (category != null) {
+            allApplications = applicationService.getAllApplicationsByCategory(category);
+        } else {
+            allApplications = applicationService.getAllApplications();
+        }
 
         // Mapping DTO
         List<ApplicationDTO> resDTO = new ArrayList<>();
@@ -29,6 +34,7 @@ public class ApplicationController {
             dto.setId(app.getId());
             dto.setTitle(app.getTitle());
             dto.setPublisher(app.getPublisher());
+            dto.setCategory(app.getCategory());
             dto.setPrice(app.getPrice());
             resDTO.add(dto);
         }
@@ -46,6 +52,7 @@ public class ApplicationController {
         resDTO.setId(existingApplication.getId());
         resDTO.setTitle(existingApplication.getTitle());
         resDTO.setPublisher(existingApplication.getPublisher());
+        resDTO.setCategory(existingApplication.getCategory());
         resDTO.setDescription(existingApplication.getDescription());
         resDTO.setPrice(existingApplication.getPrice());
         resDTO.setCreatedAt(existingApplication.getCreatedAt());
@@ -64,6 +71,7 @@ public class ApplicationController {
         resDTO.setId(newApplication.getId());
         resDTO.setTitle(newApplication.getTitle());
         resDTO.setPublisher(newApplication.getPublisher());
+        resDTO.setCategory(newApplication.getCategory());
         resDTO.setDescription(newApplication.getDescription());
         resDTO.setPrice(newApplication.getPrice());
 
@@ -80,6 +88,7 @@ public class ApplicationController {
         resDTO.setId(updatedApplication.getId());
         resDTO.setTitle(updatedApplication.getTitle());
         resDTO.setPublisher(updatedApplication.getPublisher());
+        resDTO.setCategory(updatedApplication.getCategory());
         resDTO.setDescription(updatedApplication.getDescription());
         resDTO.setPrice(updatedApplication.getPrice());
 

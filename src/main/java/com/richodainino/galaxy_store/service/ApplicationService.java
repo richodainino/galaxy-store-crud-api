@@ -20,6 +20,10 @@ public class ApplicationService {
         return applicationRepository.findByDeletedAtIsNullOrderByCreatedAt();
     }
 
+    public List<Application> getAllApplicationsByCategory(String category) {
+        return applicationRepository.findAllByCategory(category);
+    }
+
     public Application getApplicationByID(String applicationID) {
         Application application = applicationRepository.findByIdAndDeletedAtIsNull(applicationID);
         if (application == null) {

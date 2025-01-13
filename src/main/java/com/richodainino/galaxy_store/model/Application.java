@@ -29,6 +29,10 @@ public class Application {
     @NotNull(message = "Publisher is required")
     private String publisher;
 
+    @Enumerated(EnumType.STRING)
+    @NotNull(message = "Category is required")
+    private Category category;
+
     @NotNull(message = "Description is required")
     private String description;
 
