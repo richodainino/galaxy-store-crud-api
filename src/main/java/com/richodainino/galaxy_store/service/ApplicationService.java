@@ -17,11 +17,11 @@ public class ApplicationService {
     private ApplicationRepository applicationRepository;
 
     public List<Application> getAllApplications() {
-        return applicationRepository.findAllNotDeleted();
+        return applicationRepository.findByDeletedAtIsNullOrderByCreatedAt();
     }
 
     public Application getApplicationByID(String applicationID) {
-        Application application = applicationRepository.findNotDeletedByID(applicationID);
+        Application application = applicationRepository.findByIdAndDeletedAtIsNull(applicationID);
         if (application == null) {
             throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
@@ -33,7 +33,7 @@ public class ApplicationService {
     }
 
     public Application updateApplication(String applicationID, Application application) {
-        Application existingApplication = applicationRepository.findNotDeletedByID(applicationID);
+        Application existingApplication = applicationRepository.findByIdAndDeletedAtIsNull(applicationID);
         if (existingApplication == null) {
             throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
@@ -46,7 +46,7 @@ public class ApplicationService {
     }
 
     public void deleteApplication(String applicationID) {
-        Application existingApplication = applicationRepository.findNotDeletedByID(applicationID);
+        Application existingApplication = applicationRepository.findByIdAndDeletedAtIsNull(applicationID);
         if (existingApplication == null) {
             throw new ResourceNotFoundException(ErrorMessage.ERROR_APPLICATION_NOT_FOUND);
         }
