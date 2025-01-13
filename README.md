@@ -4,6 +4,7 @@ Welcome to the Galaxy Store CRUD API! This API allows you to perform Create, Rea
 - `id`: Unique identifier for each application using UUID
 - `title`: Title of the application
 - `publisher`: Publisher of the application
+- `category`: Category of the application which are `education`, `entertainment`, `finance`, `game_action`, `game_puzzle`, and `game_sports`
 - `description`: Description of the application
 - `price`: Price of the application
 
