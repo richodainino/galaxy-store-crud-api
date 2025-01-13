@@ -24,18 +24,15 @@ public class Application {
     private String id;
 
     @NotNull(message = "Title is required")
-    @Column(name = "title")
     private String title;
 
     @NotNull(message = "Publisher is required")
-    @Column(name = "publisher")
     private String publisher;
 
     @NotNull(message = "Description is required")
-    @Column(name = "description")
     private String description;
 
-    @Column(name = "price") // Price can be null for free apps (0 rupiah)
+    // Price is in rupiah and can be null for free app (0 rupiah)
     private int price;
 
     @CreatedDate
@@ -49,7 +46,6 @@ public class Application {
     private Instant updatedAt;
 
     @Column(name = "deleted_at")
-    @JsonProperty("deleted_at")
     private Instant deletedAt;
 
 }
