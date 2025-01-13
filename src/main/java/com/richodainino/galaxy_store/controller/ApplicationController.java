@@ -1,5 +1,6 @@
 package com.richodainino.galaxy_store.controller;
 
+import com.richodainino.galaxy_store.dto.ApplicationDTO;
 import com.richodainino.galaxy_store.handler.ResponseHandler;
 import com.richodainino.galaxy_store.model.Application;
 import com.richodainino.galaxy_store.service.ApplicationService;
@@ -8,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.ArrayList;
 import java.util.List;
 
 @RestController
@@ -19,29 +21,70 @@ public class ApplicationController {
     @GetMapping("/applications")
     public ResponseEntity<Object> getAllApplications() {
         List<Application> allApplications = applicationService.getAllApplications();
+
+        // Mapping DTO
+        List<ApplicationDTO> resDTO = new ArrayList<>();
+        for (Application app : allApplications) {
+            ApplicationDTO dto = new ApplicationDTO();
+            dto.setId(app.getId());
+            dto.setTitle(app.getTitle());
+            dto.setPublisher(app.getPublisher());
+            dto.setPrice(app.getPrice());
+            resDTO.add(dto);
+        }
+
         String message = "Successfully retrieved all applications";
-        return ResponseHandler.generateResponse(HttpStatus.OK, message, allApplications);
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, resDTO);
     }
 
     @GetMapping("/application/{applicationID}")
     public ResponseEntity<Object> getApplicationByID(@PathVariable String applicationID) {
         Application existingApplication = applicationService.getApplicationByID(applicationID);
+
+        // Mapping DTO
+        ApplicationDTO resDTO = new ApplicationDTO();
+        resDTO.setId(existingApplication.getId());
+        resDTO.setTitle(existingApplication.getTitle());
+        resDTO.setPublisher(existingApplication.getPublisher());
+        resDTO.setDescription(existingApplication.getDescription());
+        resDTO.setPrice(existingApplication.getPrice());
+        resDTO.setCreatedAt(existingApplication.getCreatedAt());
+        resDTO.setUpdatedAt(existingApplication.getUpdatedAt());
+
         String message = "Successfully retrieved the application";
-        return ResponseHandler.generateResponse(HttpStatus.OK, message, existingApplication);
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, resDTO);
     }
 
     @PostMapping("/application")
     public ResponseEntity<Object> addApplication(@RequestBody Application application) {
         Application newApplication = applicationService.addApplication(application);
+
+        // Mapping DTO
+        ApplicationDTO resDTO = new ApplicationDTO();
+        resDTO.setId(newApplication.getId());
+        resDTO.setTitle(newApplication.getTitle());
+        resDTO.setPublisher(newApplication.getPublisher());
+        resDTO.setDescription(newApplication.getDescription());
+        resDTO.setPrice(newApplication.getPrice());
+
         String message = "Successfully created new application";
-        return ResponseHandler.generateResponse(HttpStatus.CREATED, message, newApplication);
+        return ResponseHandler.generateResponse(HttpStatus.CREATED, message, resDTO);
     }
 
     @PutMapping("/application/{applicationID}")
     public ResponseEntity<Object> updateApplication(@PathVariable String applicationID, @RequestBody Application application) {
         Application updatedApplication = applicationService.updateApplication(applicationID, application);
+
+        // Mapping DTO
+        ApplicationDTO resDTO = new ApplicationDTO();
+        resDTO.setId(updatedApplication.getId());
+        resDTO.setTitle(updatedApplication.getTitle());
+        resDTO.setPublisher(updatedApplication.getPublisher());
+        resDTO.setDescription(updatedApplication.getDescription());
+        resDTO.setPrice(updatedApplication.getPrice());
+
         String message = "Successfully updated the application";
-        return ResponseHandler.generateResponse(HttpStatus.OK, message, updatedApplication);
+        return ResponseHandler.generateResponse(HttpStatus.OK, message, resDTO);
     }
 
     @DeleteMapping("/application/{applicationID}")
