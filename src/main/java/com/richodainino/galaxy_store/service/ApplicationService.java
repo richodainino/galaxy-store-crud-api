@@ -5,6 +5,9 @@ import com.richodainino.galaxy_store.model.Application;
 import com.richodainino.galaxy_store.repository.ApplicationRepository;
 import com.richodainino.galaxy_store.utils.ErrorMessage;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -16,8 +19,18 @@ public class ApplicationService {
     @Autowired
     private ApplicationRepository applicationRepository;
 
-    public List<Application> getAllApplications() {
-        return applicationRepository.findAllByDeletedAtIsNullOrderByCreatedAt();
+    public List<Application> getAllApplications(int page, int limit, String sortBy, String sortDirection) {
+        Sort sort = Sort.by(sortBy);
+        // If sort by other properties, we add sort by createdAt to keep the default order on top of the custom sort
+        if (!sortBy.equals("createdAt")) {
+            sort = sort.and(Sort.by("createdAt"));
+        }
+        // Ignore other direction and keep it ascending except "desc" direction
+        if (sortDirection.equals("desc")) {
+            sort = sort.descending();
+        }
+        Pageable pageReq = PageRequest.of(page, limit, sort);
+        return applicationRepository.findAllByDeletedAtIsNull(pageReq);
     }
 
     public List<Application> getAllApplicationsByCategory(String category) {

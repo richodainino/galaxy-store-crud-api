@@ -19,12 +19,16 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @GetMapping("/applications")
-    public ResponseEntity<Object> getAllApplications(@RequestParam(required = false) String category) {
+    public ResponseEntity<Object> getAllApplications(@RequestParam(required = false) String category,
+                                                     @RequestParam(defaultValue = "0") int page,
+                                                     @RequestParam(defaultValue = "5") int limit,
+                                                     @RequestParam(defaultValue = "createdAt") String sortBy,
+                                                     @RequestParam(defaultValue = "asc") String sortDirection) {
         List<Application> allApplications = new ArrayList<>();
         if (category != null) {
             allApplications = applicationService.getAllApplicationsByCategory(category);
         } else {
-            allApplications = applicationService.getAllApplications();
+            allApplications = applicationService.getAllApplications(page, limit, sortBy, sortDirection);
         }
 
         // Mapping DTO
