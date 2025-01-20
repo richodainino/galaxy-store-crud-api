@@ -9,7 +9,7 @@ import java.util.List;
 
 public interface ApplicationRepository extends JpaRepository<Application, String> {
 
-    List<Application> findByDeletedAtIsNullOrderByCreatedAt();
+    List<Application> findAllByDeletedAtIsNullOrderByCreatedAt();
 
     @NativeQuery(value = "SELECT * FROM application WHERE category = :category AND deleted_at IS NULL ORDER BY created_at")
     List<Application> findAllByCategory(@Param("category") String category);

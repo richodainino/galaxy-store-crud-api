@@ -17,7 +17,7 @@ public class ApplicationService {
     private ApplicationRepository applicationRepository;
 
     public List<Application> getAllApplications() {
-        return applicationRepository.findByDeletedAtIsNullOrderByCreatedAt();
+        return applicationRepository.findAllByDeletedAtIsNullOrderByCreatedAt();
     }
 
     public List<Application> getAllApplicationsByCategory(String category) {
