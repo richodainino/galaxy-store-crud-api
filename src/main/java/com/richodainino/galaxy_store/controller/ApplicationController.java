@@ -19,7 +19,7 @@ public class ApplicationController {
     private ApplicationService applicationService;
 
     @GetMapping("/applications")
-    public ResponseEntity<Object> getAllApplications(@RequestParam(name = "category", required = false) String category) {
+    public ResponseEntity<Object> getAllApplications(@RequestParam(required = false) String category) {
         List<Application> allApplications = new ArrayList<>();
         if (category != null) {
             allApplications = applicationService.getAllApplicationsByCategory(category);
